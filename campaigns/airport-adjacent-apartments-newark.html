@@ -225,16 +225,25 @@
   </section>
   <script>
     async function submitLeadForm(){
-      var name=document.getElementById('lead-name').value.trim();
-      var email=document.getElementById('lead-email').value.trim();
-      var phone=document.getElementById('lead-phone').value.trim();
-      var unit=document.getElementById('lead-unit').value;
-      var source=window.location.pathname.replace('/campaigns/','').replace('/blogs/','').replace('.html','');
-      if(!name||!email){alert('Please enter your name and email.');return;}
+      var name=document.getElementById('lead-name')?.value.trim();
+      var email=document.getElementById('lead-email')?.value.trim();
+      var phone=document.getElementById('lead-phone')?.value.trim();
+      var unit=document.getElementById('lead-unit')?.value||'';
+      if(!name||!email){
+        if(!name)document.getElementById('lead-name').style.borderColor='rgba(220,80,60,0.6)';
+        if(!email)document.getElementById('lead-email').style.borderColor='rgba(220,80,60,0.6)';
+        return;
+      }
+      var btn=document.querySelector('[onclick="submitLeadForm()"]');
+      if(btn){btn.disabled=true;btn.textContent='Sending...';}
       try{
-        await fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,phone:phone,source:source,page:source,status:'new'})}));
-        document.getElementById('lead-form-section').innerHTML='<div style="text-align:center;padding:60px 20px"><div style="font-family:Cormorant Garamond,serif;font-size:42px;color:#C8A96E;margin-bottom:16px">Thank You, '+name+'</div><p style="color:rgba(245,240,232,0.6);font-size:14px;margin-bottom:32px">Ana will reach out within the hour.<br>In the meantime, explore available units.</p><a href="https://iron65.com/floor-plans/" target="_blank" style="background:#C8A96E;color:#000;padding:14px 32px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block">View Floor Plans</a></div>';
-      }catch(e){alert('Please call Ana directly: (908) 699-6500');}
+        await fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,phone:phone,source:'campaign-form',page:window.location.pathname,message:unit,status:'new'})});
+        var section=document.getElementById('lead-form-section');
+        if(section){section.innerHTML='<div style="text-align:center;padding:60px 20px;max-width:600px;margin:0 auto"><div style="font-size:48px;margin-bottom:16px">\u2713</div><div style="font-family:Cormorant Garamond,serif;font-size:36px;color:#C8A96E;margin-bottom:16px">Thank You, '+name+'!</div><p style="color:rgba(245,240,232,0.6);font-size:14px;line-height:1.7;margin-bottom:24px">Ana will reach out within the hour.<br>Call or text anytime: <a href="tel:9086996500" style="color:#C8A96E">(908) 699-6500</a></p></div>';}
+      }catch(e){
+        if(btn){btn.disabled=false;btn.textContent='REQUEST INFORMATION';}
+        alert('Submission failed. Please call Ana: (908) 699-6500');
+      }
     }
   </script>
   <section style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:100%">

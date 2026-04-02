@@ -91,6 +91,8 @@ function jsubmit(){
   document.getElementById('jform').style.display='none';
   jusr(n+' \u2022 '+e+(p?' \u2022 '+p:''));
   jbot('Thanks, '+n+'! Pick a time that works:');
+  // Save lead via Netlify function
+  fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,email:e,phone:p,source:'jessica-chatbot',page:window.location.pathname,message:jL.unit||'',status:'new'})}).catch(function(){});
   jshowslots();
 }
 
@@ -109,7 +111,9 @@ function jbook(slot){
   document.getElementById('jinbar').style.display='none';
   jbot("You\u2019re booked, "+jL.name+"! \uD83C\uDF89");
   var c=document.getElementById('jconf');c.style.display='block';
-  c.innerHTML='<div style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.2);border-radius:8px;padding:12px;font-size:11px;line-height:1.8;color:rgba(245,240,232,0.75)"><div style="text-align:center;font-size:20px;margin-bottom:4px">\u2705</div><div style="text-align:center;color:#C8A96E;font-weight:700;font-size:13px;margin-bottom:8px">Tour Confirmed</div><strong>'+jL.name+'</strong><br>'+jL.email+'<br><strong>'+slot+'</strong><br>65 McWhorter St, Newark NJ 07105<br><br><div style="text-align:center;margin-bottom:6px"><a href="https://calendly.com/ana-rosaliagroup/65-iron-tour" target="_blank" style="display:inline-block;background:#C8A96E;color:#000;padding:7px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase">Add to Calendar</a></div><div style="text-align:center;color:rgba(200,169,110,0.5);font-size:9px">Ana will call/text to confirm within the hour</div></div>';
+  c.innerHTML='<div style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.2);border-radius:8px;padding:12px;font-size:11px;line-height:1.8;color:rgba(245,240,232,0.75)"><div style="text-align:center;font-size:20px;margin-bottom:4px">\u2705</div><div style="text-align:center;color:#C8A96E;font-weight:700;font-size:13px;margin-bottom:8px">Tour Confirmed</div><strong>'+jL.name+'</strong><br>'+jL.email+'<br><strong>'+slot+'</strong><br>65 McWhorter St, Newark NJ 07105<br><br><div style="margin-top:10px;padding:10px;background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.15);border-radius:6px;text-align:center"><div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:4px">\u2713 Booking Saved</div><div style="font-size:11px;color:rgba(245,240,232,0.6);font-family:Montserrat,sans-serif">Ana will call/text to confirm within the hour<br>(908) 699-6500</div></div></div>';
+  // Save lead via Netlify function
+  fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:jL.name,email:jL.email,phone:jL.phone,source:'jessica-booked',page:window.location.pathname,message:'Tour: '+slot+' | Unit: '+(jL.unit||''),status:'tour_scheduled'})}).catch(function(){});
 }
 
 async function japi(msg){
