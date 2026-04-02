@@ -1,6 +1,7 @@
-var jH=[],jL={name:'',email:'',phone:'',unit:''};
+var jH=[],jL={name:'',email:'',phone:'',unit:'',preq:{}};
 var jSys="You are Jessica, Iron65\u2019s warm and friendly virtual leasing concierge. Your ONLY goal is to capture the visitor\u2019s name, email, phone number, and preferred unit \u2014 then book them a tour. Be conversational, never robotic.\n\nPRICING:\nStudio from $2,388 | Studio Flex from $2,499 | 1BR Flex from $2,650 | 1BR from $2,788 | Loft from $3,788\n\nKEY FACTS:\n- 65 McWhorter St, Newark NJ 07105\n- Built 2024, Ironbound District\n- 8-10 NYC blocks to Newark Penn (~10 min walk)\n- 20 min to Midtown via NJ Transit | 22 min to WTC via PATH | 5 min to EWR\n- No NYC income tax for NJ residents (saves $3K-$9K/yr)\n- Amenities: rooftop gym, yoga studio, cold plunge, saunas, rooftop terrace NYC views, outdoor kitchen, game room, 24-hr security, in-unit W/D, quartz countertops, fiber internet\n- Currently: Up to 1 month free on select units\n- Tours: Book directly in chat\n- Phone: (908) 699-6500\n\nRULES:\n- Max 2-3 sentences per response\n- Always be moving toward booking\n- Never say I apologize \u2014 say Let me get Ana to help \u2014 call (908) 699-6500\n- Reference the current special: up to 1 month free on select units";
-var jSlots=['Sat 1:00 PM','Sat 3:00 PM','Sun 1:00 PM','Sun 2:00 PM','Tue 12:00 PM','Wed 2:00 PM','Thu 3:00 PM','Fri 12:00 PM'];
+var jselected='';
+var jpreqAnswers={};
 
 function jtoggle(){
   var w=document.getElementById('jwin'),b=document.getElementById('jbtn');
@@ -8,7 +9,7 @@ function jtoggle(){
     w.style.display='block';b.style.transform='scale(0)';
     setTimeout(function(){b.style.display='none'},150);
     if(!document.getElementById('jmsgs').children.length){
-      jbot("Hi! I'm Jessica \uD83D\uDC4B I'm here to help you find your perfect Iron65 home and book a tour. What can I help with?");
+      jbot("Hi! I\u2019m Jessica \uD83D\uDC4B I\u2019m here to help you find your perfect Iron65 home and book a tour. What can I help with?");
       jpill(["\uD83D\uDCC5 Book a Tour","\uD83D\uDCB0 Pricing","\uD83C\uDFCB\uFE0F Amenities","\uD83D\uDE87 Transit"]);
     }
   }else{
@@ -43,11 +44,10 @@ function jpill(arr){
   });
 }
 
-function jhidepills(){document.getElementById('jpills').style.display='none';}
+function jhidepills(){var q=document.getElementById('jpills');q.style.display='none';q.innerHTML='';}
 
 function jpclick(l){
   jhidepills();
-  // Strip leading emoji
   var c=l.replace(/^\S+\s*/,'').trim();
   jusr(c);
 
@@ -56,7 +56,7 @@ function jpclick(l){
     jpill(['Studio $2,388+','Studio Flex $2,499+','1BR Flex $2,650+','1BR $2,788+','Loft $3,788+']);
   }else if(l.indexOf('$')!==-1){
     jL.unit=c;
-    jbot("Perfect! Just a few quick details and I\u2019ll show you tour times:");
+    jbot("Perfect! I\u2019ll need a few details to set up your tour:");
     jshowform();
   }else if(l.indexOf('Pricing')!==-1){
     jbot('Studios from <strong>$2,388</strong>, Studio Flex <strong>$2,499</strong>, 1BR Flex <strong>$2,650</strong>, 1BR <strong>$2,788</strong>, Lofts <strong>$3,788</strong>. Plus up to 1 month free on select units!');
@@ -78,42 +78,166 @@ function jpclick(l){
 function jshowform(){
   jhidepills();
   var f=document.getElementById('jform');f.style.display='block';
-  f.innerHTML='<input id="jfn" placeholder="Your name" style="background:rgba(255,255,255,0.03);border:1px solid rgba(200,169,110,0.18);border-radius:6px;padding:8px 10px;font-size:11px;color:#f5f0e8;margin-bottom:5px;width:100%;outline:none;font-family:Montserrat,sans-serif;box-sizing:border-box"><input id="jfe" type="email" placeholder="Email address" style="background:rgba(255,255,255,0.03);border:1px solid rgba(200,169,110,0.18);border-radius:6px;padding:8px 10px;font-size:11px;color:#f5f0e8;margin-bottom:5px;width:100%;outline:none;font-family:Montserrat,sans-serif;box-sizing:border-box"><input id="jfp" type="tel" placeholder="Phone (optional)" style="background:rgba(255,255,255,0.03);border:1px solid rgba(200,169,110,0.18);border-radius:6px;padding:8px 10px;font-size:11px;color:#f5f0e8;margin-bottom:5px;width:100%;outline:none;font-family:Montserrat,sans-serif;box-sizing:border-box"><button onclick="jsubmit()" style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif">Get Tour Times \u2192</button>';
-  document.getElementById('jfn').focus();
+  f.innerHTML='<div style="padding:0 2px;width:100%;box-sizing:border-box">'
+    +'<input class="jfld" id="jfn" type="text" placeholder="Your full name *">'
+    +'<input class="jfld" id="jfe" type="email" placeholder="Email address *">'
+    +'<input class="jfld" id="jfp" type="tel" placeholder="Phone number *">'
+    +'<button onclick="jsubmit()" style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;margin-top:4px">Next \u2014 Qualifying Questions \u2192</button>'
+    +'</div>';
+  setTimeout(function(){var el=document.getElementById('jfn');if(el)el.focus();},100);
 }
 
 function jsubmit(){
   var n=document.getElementById('jfn').value.trim();
   var e=document.getElementById('jfe').value.trim();
   var p=document.getElementById('jfp').value.trim();
-  if(!n||!e){jbot('I just need your name and email to pull up times!');return;}
+
+  var valid=true;
+  if(!n){document.getElementById('jfn').style.borderColor='rgba(220,80,60,0.6)';valid=false;}
+  if(!e){document.getElementById('jfe').style.borderColor='rgba(220,80,60,0.6)';valid=false;}
+  if(!p){document.getElementById('jfp').style.borderColor='rgba(220,80,60,0.6)';valid=false;}
+  if(!valid){jbot('Please fill in all three fields \u2014 name, email, and phone are all required.');return;}
+
   jL.name=n;jL.email=e;jL.phone=p;
   document.getElementById('jform').style.display='none';
-  jusr(n+' \u2022 '+e+(p?' \u2022 '+p:''));
-  jbot('Thanks, '+n+'! Pick a time that works:');
-  // Save lead via Netlify function
+  jusr(n+' \u2022 '+e+' \u2022 '+p);
+  jbot('Thanks '+n+'! A few quick questions to make sure Ana is prepared for your visit:');
+
+  // Save initial lead
   fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,email:e,phone:p,source:'jessica-chatbot',page:window.location.pathname,message:jL.unit||'',status:'new'})}).catch(function(){});
-  jshowslots();
+
+  setTimeout(jshowPreQual,400);
+}
+
+function jshowPreQual(){
+  var f=document.getElementById('jform');f.style.display='block';
+  f.innerHTML='<div style="padding:0 2px;width:100%;box-sizing:border-box">'
+    +'<div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:8px">When are you looking to move in?</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px">'
+    +'<div class="jslot" onclick="jpreq(this,\'move\',\'ASAP\')">ASAP</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'move\',\'1-2 months\')">1\u20132 months</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'move\',\'3-6 months\')">3\u20136 months</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'move\',\'Just exploring\')">Just exploring</div>'
+    +'</div>'
+    +'<div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:8px">What is your monthly budget?</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px">'
+    +'<div class="jslot" onclick="jpreq(this,\'budget\',\'Under $2,500\')">Under $2,500</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'budget\',\'$2,500-$3,000\')">$2,500\u2013$3,000</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'budget\',\'$3,000-$4,000\')">$3,000\u2013$4,000</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'budget\',\'$4,000+\')">$4,000+</div>'
+    +'</div>'
+    +'<div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:8px">Do you have a credit score above 650?</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px">'
+    +'<div class="jslot" onclick="jpreq(this,\'credit\',\'Yes 650+\')">Yes \u2014 650+</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'credit\',\'Yes 700+\')">Yes \u2014 700+</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'credit\',\'Not sure\')">Not sure</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'credit\',\'Below 650\')">Below 650</div>'
+    +'</div>'
+    +'<div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:8px">How will you be paying?</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px">'
+    +'<div class="jslot" onclick="jpreq(this,\'income\',\'Employed W2\')">Employed W2</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'income\',\'Self-employed\')">Self-employed</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'income\',\'Guarantor\')">Guarantor</div>'
+    +'<div class="jslot" onclick="jpreq(this,\'income\',\'Other\')">Other</div>'
+    +'</div>'
+    +'<button id="jpreqbtn" onclick="jfinishPreQual()" disabled style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;opacity:0.4">Show Me Available Times \u2192</button>'
+    +'</div>';
+}
+
+function jpreq(el,key,val){
+  jpreqAnswers[key]=val;
+  var grp=el.parentElement;
+  var slots=grp.querySelectorAll('.jslot');
+  for(var i=0;i<slots.length;i++){
+    slots[i].style.background='rgba(200,169,110,0.06)';
+    slots[i].style.borderColor='rgba(200,169,110,0.15)';
+    slots[i].style.color='rgba(245,240,232,0.7)';
+  }
+  el.style.background='rgba(200,169,110,0.18)';
+  el.style.borderColor='#C8A96E';
+  el.style.color='#C8A96E';
+  if(Object.keys(jpreqAnswers).length>=4){
+    var btn=document.getElementById('jpreqbtn');
+    if(btn){btn.disabled=false;btn.style.opacity='1';}
+  }
+}
+
+function jfinishPreQual(){
+  var q=jpreqAnswers;
+  document.getElementById('jform').style.display='none';
+  if(q.credit==='Below 650'){
+    jbot('Thanks for being upfront, '+jL.name+'! A credit score below 650 may require a guarantor or additional deposit. Ana can walk you through the options in person \u2014 let\u2019s still get you a tour. Pick a time:');
+  }else{
+    jbot('Great \u2014 you\u2019re all set! '+(jL.unit?jL.unit+' looks like a great fit':'We have units that fit your budget')+'. Let me show you available tour times:');
+  }
+  jL.preq=q;
+  jL.unit=jL.unit||q.budget||'';
+  setTimeout(jshowslots,400);
 }
 
 function jshowslots(){
+  var slots=[];
+  var now=new Date();
+  var dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var tourTimes={2:['12:00 PM','2:00 PM','4:00 PM','6:00 PM'],3:['12:00 PM','2:00 PM','4:00 PM','6:00 PM'],4:['12:00 PM','2:00 PM','4:00 PM','6:00 PM'],5:['12:00 PM','2:00 PM','4:00 PM'],6:['12:00 PM','1:00 PM','2:00 PM','3:00 PM'],0:['12:00 PM','1:00 PM','2:00 PM','3:00 PM']};
+  var d=new Date(now);d.setDate(d.getDate()+1);
+  var count=0;
+  while(slots.length<8&&count<30){
+    var dow=d.getDay();
+    if(tourTimes[dow]){
+      var times=tourTimes[dow];
+      var time=times[Math.floor(slots.length/3)%times.length]||times[0];
+      var label=dayNames[dow]+' '+monthNames[d.getMonth()]+' '+d.getDate()+' \u00B7 '+time;
+      slots.push(label);
+    }
+    d.setDate(d.getDate()+1);count++;
+  }
+  var unique=[];
+  for(var i=0;i<slots.length;i++){if(unique.indexOf(slots[i])===-1)unique.push(slots[i]);}
+  unique=unique.slice(0,8);
+
   var s=document.getElementById('jslots');s.style.display='block';
   var html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">';
-  jSlots.forEach(function(t){
-    html+='<button onclick="jbook(\''+t+'\')" style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.15);border-radius:6px;padding:7px 6px;font-size:10px;color:rgba(245,240,232,0.7);cursor:pointer;text-align:center;font-family:Montserrat,sans-serif;transition:all 0.15s" onmouseover="this.style.background=\'rgba(200,169,110,0.18)\';this.style.borderColor=\'#C8A96E\';this.style.color=\'#C8A96E\'" onmouseout="this.style.background=\'rgba(200,169,110,0.06)\';this.style.borderColor=\'rgba(200,169,110,0.15)\';this.style.color=\'rgba(245,240,232,0.7)\'">'+t+'</button>';
-  });
-  html+='</div>';
+  for(var i=0;i<unique.length;i++){
+    html+='<div class="jslot" onclick="jselslot(this,\''+unique[i].replace(/'/g,"\\'")+'\')">'+unique[i]+'</div>';
+  }
+  html+='</div><div style="padding:4px 0 0"><button id="jconfbtn" onclick="jconfirm()" disabled style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;opacity:0.4">Confirm My Tour \u2192</button></div>';
   s.innerHTML=html;
 }
 
-function jbook(slot){
+function jselslot(el,slot){
+  jselected=slot;
+  var all=document.getElementById('jslots').querySelectorAll('.jslot');
+  for(var i=0;i<all.length;i++){
+    all[i].style.background='rgba(200,169,110,0.06)';
+    all[i].style.borderColor='rgba(200,169,110,0.15)';
+    all[i].style.color='rgba(245,240,232,0.7)';
+  }
+  el.style.background='rgba(200,169,110,0.18)';
+  el.style.borderColor='#C8A96E';
+  el.style.color='#C8A96E';
+  var btn=document.getElementById('jconfbtn');
+  if(btn){btn.disabled=false;btn.style.opacity='1';}
+}
+
+function jconfirm(){
+  if(!jselected)return;
+  var slot=jselected;
+  var preqSummary='Move: '+(jpreqAnswers.move||'?')+' | Budget: '+(jpreqAnswers.budget||'?')+' | Credit: '+(jpreqAnswers.credit||'?')+' | Income: '+(jpreqAnswers.income||'?');
+
+  fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:jL.name,email:jL.email,phone:jL.phone,source:'jessica-booked',page:window.location.pathname,message:(jL.unit||'')+' | '+preqSummary,status:'tour_scheduled',tourSlot:slot})}).catch(function(){});
+
   document.getElementById('jslots').style.display='none';
   document.getElementById('jinbar').style.display='none';
-  jbot("You\u2019re booked, "+jL.name+"! \uD83C\uDF89");
-  var c=document.getElementById('jconf');c.style.display='block';
-  c.innerHTML='<div style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.2);border-radius:8px;padding:12px;font-size:11px;line-height:1.8;color:rgba(245,240,232,0.75)"><div style="text-align:center;font-size:20px;margin-bottom:4px">\u2705</div><div style="text-align:center;color:#C8A96E;font-weight:700;font-size:13px;margin-bottom:8px">Tour Confirmed</div><strong>'+jL.name+'</strong><br>'+jL.email+'<br><strong>'+slot+'</strong><br>65 McWhorter St, Newark NJ 07105<br><br><div style="margin-top:10px;padding:10px;background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.15);border-radius:6px;text-align:center"><div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:4px">\u2713 Booking Saved</div><div style="font-size:11px;color:rgba(245,240,232,0.6);font-family:Montserrat,sans-serif">Ana will call/text to confirm within the hour<br>(908) 699-6500</div></div></div>';
-  // Save lead via Netlify function
-  fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:jL.name,email:jL.email,phone:jL.phone,source:'jessica-booked',page:window.location.pathname,message:'Tour: '+slot+' | Unit: '+(jL.unit||''),status:'tour_scheduled'})}).catch(function(){});
+  jusr('Confirmed: '+slot);
+  jbot('You\u2019re booked, '+jL.name+'! \uD83C\uDF89');
+
+  var m=document.getElementById('jmsgs');
+  var d=document.createElement('div');
+  d.style.cssText='background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.2);border-radius:8px;padding:12px;font-size:11px;line-height:1.8;color:rgba(245,240,232,0.75);margin-top:8px';
+  d.innerHTML='\uD83D\uDCCD 65 McWhorter St, Newark NJ 07105<br>\uD83D\uDCC5 '+slot+'<br>\uD83D\uDCE7 Confirmation sent to '+jL.email+'<br>\uD83D\uDCDE Questions? Call (908) 699-6500<br><div style="margin-top:10px;font-size:11px;color:rgba(200,169,110,0.7);font-family:Montserrat,sans-serif">Ana Haynes will personally greet you. See you soon!</div>';
+  m.appendChild(d);m.scrollTop=m.scrollHeight;
 }
 
 async function japi(msg){
