@@ -21,7 +21,16 @@ exports.handler = async (event) => {
           'Authorization': 'Bearer ' + SUPA_KEY,
           'Prefer': 'return=minimal'
         },
-        body: JSON.stringify({ name, email, phone, source, page, message, status: status || 'new', role: 'user' })
+        body: JSON.stringify({
+          name: name || '',
+          email: email || '',
+          phone: phone || '',
+          source: source || 'iron65-campaign',
+          message: (message || '') + (page ? ' | Page: ' + page : ''),
+          property: 'Iron65',
+          client: 'rosalia',
+          status: status || 'new'
+        })
       }
     );
 
