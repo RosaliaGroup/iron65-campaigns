@@ -110,52 +110,55 @@ function jsubmit(){
 }
 
 function jshowPreQual(){
+  jpreqAnswers={};
   var f=document.getElementById('jform');f.style.display='block';
-  f.innerHTML='<div style="padding:0 2px;width:100%;box-sizing:border-box">'
-    +'<div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:8px">When are you looking to move in?</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px">'
-    +'<div class="jslot" onclick="jpreq(this,\'move\',\'ASAP\')">ASAP</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'move\',\'1-2 months\')">1\u20132 months</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'move\',\'3-6 months\')">3\u20136 months</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'move\',\'Just exploring\')">Just exploring</div>'
+  f.innerHTML='<div style="padding:0 4px;width:100%;box-sizing:border-box;font-family:Montserrat,sans-serif">'
+    +'<div style="font-size:9px;color:#C8A96E;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;margin-top:4px">When are you looking to move in?</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px" id="grp-move">'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'move\',\'ASAP \u2014 within 30 days\',\'grp-move\')">ASAP</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'move\',\'1\u20132 months\',\'grp-move\')">1\u20132 months</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'move\',\'3\u20136 months\',\'grp-move\')">3\u20136 months</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'move\',\'Just exploring\',\'grp-move\')">Just exploring</button>'
     +'</div>'
-    +'<div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:8px">What is your monthly budget?</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px">'
-    +'<div class="jslot" onclick="jpreq(this,\'budget\',\'Under $2,500\')">Under $2,500</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'budget\',\'$2,500-$3,000\')">$2,500\u2013$3,000</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'budget\',\'$3,000-$4,000\')">$3,000\u2013$4,000</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'budget\',\'$4,000+\')">$4,000+</div>'
+    +'<div style="font-size:9px;color:#C8A96E;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">Monthly budget?</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px" id="grp-budget">'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'budget\',\'Under $2,500/mo\',\'grp-budget\')">Under $2,500</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'budget\',\'$2,500\u2013$3,000/mo\',\'grp-budget\')">$2,500\u2013$3,000</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'budget\',\'$3,000\u2013$4,000/mo\',\'grp-budget\')">$3,000\u2013$4,000</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'budget\',\'$4,000+/mo\',\'grp-budget\')">$4,000+</button>'
     +'</div>'
-    +'<div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:8px">Do you have a credit score above 650?</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px">'
-    +'<div class="jslot" onclick="jpreq(this,\'credit\',\'Yes 650+\')">Yes \u2014 650+</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'credit\',\'Yes 700+\')">Yes \u2014 700+</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'credit\',\'Not sure\')">Not sure</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'credit\',\'Below 650\')">Below 650</div>'
+    +'<div style="font-size:9px;color:#C8A96E;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">Credit score?</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px" id="grp-credit">'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'credit\',\'700+\',\'grp-credit\')">700+</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'credit\',\'650\u2013699\',\'grp-credit\')">650\u2013699</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'credit\',\'Below 650\',\'grp-credit\')">Below 650</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'credit\',\'Not sure\',\'grp-credit\')">Not sure</button>'
     +'</div>'
-    +'<div style="font-size:10px;color:#C8A96E;letter-spacing:1px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin-bottom:8px">How will you be paying?</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px">'
-    +'<div class="jslot" onclick="jpreq(this,\'income\',\'Employed W2\')">Employed W2</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'income\',\'Self-employed\')">Self-employed</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'income\',\'Guarantor\')">Guarantor</div>'
-    +'<div class="jslot" onclick="jpreq(this,\'income\',\'Other\')">Other</div>'
+    +'<div style="font-size:9px;color:#C8A96E;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">Employment / income?</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px" id="grp-income">'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'income\',\'Employed W2\',\'grp-income\')">Employed W2</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'income\',\'Self-employed\',\'grp-income\')">Self-employed</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'income\',\'Guarantor/Co-signer\',\'grp-income\')">Guarantor</button>'
+    +'<button class="jpreq-btn" onclick="jpreq(this,\'income\',\'Other\',\'grp-income\')">Other</button>'
     +'</div>'
-    +'<button id="jpreqbtn" onclick="jfinishPreQual()" disabled style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;opacity:0.4">Show Me Available Times \u2192</button>'
+    +'<button id="jpreqbtn" onclick="jfinishPreQual()" disabled style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;opacity:0.35;margin-top:4px;transition:opacity 0.3s">Show Me Available Times \u2192</button>'
     +'</div>';
 }
 
-function jpreq(el,key,val){
-  jpreqAnswers[key]=val;
-  var grp=el.parentElement;
-  var slots=grp.querySelectorAll('.jslot');
-  for(var i=0;i<slots.length;i++){
-    slots[i].style.background='rgba(200,169,110,0.06)';
-    slots[i].style.borderColor='rgba(200,169,110,0.15)';
-    slots[i].style.color='rgba(245,240,232,0.7)';
+function jpreq(el,key,val,grpId){
+  var grp=document.getElementById(grpId);
+  var btns=grp.querySelectorAll('.jpreq-btn');
+  for(var i=0;i<btns.length;i++){
+    btns[i].style.background='transparent';
+    btns[i].style.borderColor='rgba(200,169,110,0.25)';
+    btns[i].style.color='rgba(200,169,110,0.85)';
+    btns[i].style.fontWeight='400';
   }
   el.style.background='rgba(200,169,110,0.18)';
   el.style.borderColor='#C8A96E';
   el.style.color='#C8A96E';
+  el.style.fontWeight='600';
+  jpreqAnswers[key]=val;
   if(Object.keys(jpreqAnswers).length>=4){
     var btn=document.getElementById('jpreqbtn');
     if(btn){btn.disabled=false;btn.style.opacity='1';}
