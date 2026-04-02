@@ -32,17 +32,11 @@
   </style>
 </head>
 <body>
-  <header style="background:var(--i65-black, #080808);padding:14px 40px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(200,169,110,0.2);position:sticky;top:0;z-index:9000;backdrop-filter:blur(12px);">
-    <a href="https://iron65.com" style="text-decoration:none;display:flex;align-items:center;gap:12px;">
-      <img src="/images/Iron-65-logo-gold-1-300x281.png" alt="Iron65 Logo" style="height:42px;width:auto;">
-      <span style="font-family:'Cormorant Garamond',serif;color:var(--i65-gold, #C8A96E);font-size:26px;font-weight:600;letter-spacing:2px;">IRON<span style="font-weight:300;">65</span></span>
-    </a>
-    <nav style="display:flex;gap:24px;align-items:center;">
-      <a href="https://iron65.com" style="color:#fff;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;">Home</a>
-      <a href="#contact" style="color:#fff;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;">Contact</a>
-      <a href="https://calendly.com/ana-rosaliagroup/65-iron-tour" style="background:var(--i65-gold, #C8A96E);color:#080808;padding:10px 24px;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;border-radius:4px;">Book Tour</a>
-    </nav>
-  </header>
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:200;padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(200,169,110,0.12)">
+  <img src="/images/Iron-65-logo-gold-1-300x281.png" alt="Iron65" style="height:36px;width:auto">
+  <button onclick="jtoggle()" style="background:#C8A96E;color:#000;border:none;padding:9px 20px;font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer">BOOK A TOUR</button>
+</nav>
+<div style="height:60px"></div>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
 
 <!-- HERO SECTION -->
@@ -211,15 +205,15 @@
       </div>
     </div>
   </section>
-  <section id="contact" style="padding:80px 40px;background:#080808;">
+  <section id="lead-form-section" style="padding:80px 40px;background:#080808;">
     <div style="max-width:600px;margin:0 auto;text-align:center;">
       <h2 style="font-family:'Cormorant Garamond',serif;color:#C8A96E;font-size:36px;margin:0 0 12px;">Schedule Your Tour</h2>
-      <p style="color:#888;font-family:'Montserrat',sans-serif;font-size:15px;margin:0 0 40px;">Experience Iron65 in person. Fill out the form or book directly.</p>
-      <form onsubmit="event.preventDefault();alert('Thank you! We\'ll contact you within 24 hours.');" style="display:flex;flex-direction:column;gap:16px;">
-        <input type="text" name="name" placeholder="Full Name" required style="background:#111;border:1px solid #333;border-radius:8px;padding:14px 18px;color:#fff;font-family:'Montserrat',sans-serif;font-size:14px;outline:none;">
-        <input type="email" name="email" placeholder="Email Address" required style="background:#111;border:1px solid #333;border-radius:8px;padding:14px 18px;color:#fff;font-family:'Montserrat',sans-serif;font-size:14px;outline:none;">
-        <input type="tel" name="phone" placeholder="Phone Number" style="background:#111;border:1px solid #333;border-radius:8px;padding:14px 18px;color:#fff;font-family:'Montserrat',sans-serif;font-size:14px;outline:none;">
-        <select name="unit" style="background:#111;border:1px solid #333;border-radius:8px;padding:14px 18px;color:#999;font-family:'Montserrat',sans-serif;font-size:14px;outline:none;">
+      <p style="color:#888;font-family:'Montserrat',sans-serif;font-size:15px;margin:0 0 40px;">Experience Iron65 in person. Fill out the form below.</p>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <input type="text" id="lead-name" placeholder="Full Name" required style="background:#111;border:1px solid #333;border-radius:8px;padding:14px 18px;color:#fff;font-family:'Montserrat',sans-serif;font-size:14px;outline:none;">
+        <input type="email" id="lead-email" placeholder="Email Address" required style="background:#111;border:1px solid #333;border-radius:8px;padding:14px 18px;color:#fff;font-family:'Montserrat',sans-serif;font-size:14px;outline:none;">
+        <input type="tel" id="lead-phone" placeholder="Phone Number" style="background:#111;border:1px solid #333;border-radius:8px;padding:14px 18px;color:#fff;font-family:'Montserrat',sans-serif;font-size:14px;outline:none;">
+        <select id="lead-unit" style="background:#111;border:1px solid #333;border-radius:8px;padding:14px 18px;color:#999;font-family:'Montserrat',sans-serif;font-size:14px;outline:none;">
           <option value="">Select Unit Preference</option>
           <option value="studio">Studio (from $2,388)</option>
           <option value="studio-flex">Studio Flex (from $2,499)</option>
@@ -227,11 +221,24 @@
           <option value="1br">1BR (from $2,788)</option>
           <option value="loft">Loft (from $3,788)</option>
         </select>
-        <button type="submit" style="background:#C8A96E;color:#080808;border:none;border-radius:8px;padding:16px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Request Information</button>
-      </form>
-      
+        <button onclick="submitLeadForm()" style="background:#C8A96E;color:#080808;border:none;border-radius:8px;padding:16px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Request Information</button>
+      </div>
     </div>
   </section>
+  <script>
+    async function submitLeadForm(){
+      var name=document.getElementById('lead-name').value.trim();
+      var email=document.getElementById('lead-email').value.trim();
+      var phone=document.getElementById('lead-phone').value.trim();
+      var unit=document.getElementById('lead-unit').value;
+      var source=window.location.pathname.replace('/campaigns/','').replace('/blogs/','').replace('.html','');
+      if(!name||!email){alert('Please enter your name and email.');return;}
+      try{
+        await fetch('https://ekxlteabqduyrnhpwzll.supabase.co/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreGx0ZWFicWR1eXJuaHB3emxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgxMTQ4MzMsImV4cCI6MjAyMzY5MDgzM30.QjmMEMlMzRNBxNaFsAbXoPYuFMFvTLkB3YqmL8qbqm4','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreGx0ZWFicWR1eXJuaHB3emxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgxMTQ4MzMsImV4cCI6MjAyMzY5MDgzM30.QjmMEMlMzRNBxNaFsAbXoPYuFMFvTLkB3YqmL8qbqm4','Prefer':'return=minimal'},body:JSON.stringify({name:name,email:email,phone:phone,source:source,page:source,status:'new',role:'user'})});
+        document.getElementById('lead-form-section').innerHTML='<div style="text-align:center;padding:60px 20px"><div style="font-family:Cormorant Garamond,serif;font-size:42px;color:#C8A96E;margin-bottom:16px">Thank You, '+name+'</div><p style="color:rgba(245,240,232,0.6);font-size:14px;margin-bottom:32px">Ana will reach out within the hour.<br>In the meantime, explore available units.</p><a href="https://iron65.com/floor-plans/" target="_blank" style="background:#C8A96E;color:#000;padding:14px 32px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block">View Floor Plans</a></div>';
+      }catch(e){alert('Please call Ana directly: (908) 699-6500');}
+    }
+  </script>
   <section style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:100%">
   <img src="/images/Iron-65-Gallery-Images-3.webp" style="width:100%;aspect-ratio:4/3;object-fit:cover" alt="Iron65 living room">
   <img src="/images/Iron-65-Gallery-Images-6.webp" style="width:100%;aspect-ratio:4/3;object-fit:cover" alt="Iron65 bedroom">
@@ -284,157 +291,53 @@
       </button>
     </div>
   </div>
-  <!-- Jessica Chatbot -->
-  <div id="jb" onclick="jOpen()" style="position:fixed;bottom:20px;right:20px;width:52px;height:52px;background:#C8A96E;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 16px rgba(200,169,110,0.3);z-index:10000;transition:transform 0.15s ease;">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  </div>
-  <div id="jp" style="display:none;position:fixed;bottom:82px;right:20px;width:340px;background:#0d0b08;border:1px solid rgba(200,169,110,0.2);border-radius:12px;overflow:hidden;z-index:10000;box-shadow:0 8px 40px rgba(0,0,0,0.5);font-family:'Montserrat',sans-serif;">
-    <div style="background:#0d0b08;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(200,169,110,0.1);">
-      <div style="display:flex;align-items:center;gap:9px;">
-        <div style="width:34px;height:34px;background:rgba(200,169,110,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;">&#x1F44B;</div>
+  <!-- Jessica -->
+  <button id="jbtn" onclick="jtoggle()" style="position:fixed;bottom:24px;right:24px;z-index:9999;width:52px;height:52px;background:#C8A96E;border:none;border-radius:50%;cursor:pointer;box-shadow:0 2px 16px rgba(200,169,110,0.3);display:flex;align-items:center;justify-content:center">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+  <div id="jwin" style="display:none;position:fixed;bottom:84px;right:24px;width:340px;background:#0d0b08;border:1px solid rgba(200,169,110,0.2);border-radius:12px;overflow:hidden;z-index:9999;box-shadow:0 8px 40px rgba(0,0,0,0.5);font-family:Montserrat,sans-serif">
+    <div style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(200,169,110,0.1)">
+      <div style="display:flex;align-items:center;gap:9px">
+        <div style="width:34px;height:34px;background:rgba(200,169,110,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Cormorant Garamond,serif;font-size:16px;color:#C8A96E;font-weight:700">J</div>
         <div>
-          <div style="font-family:'Cormorant Garamond',serif;color:#C8A96E;font-size:13px;font-weight:600;letter-spacing:0.5px;">Jessica</div>
-          <div style="color:rgba(200,169,110,0.4);font-size:9px;letter-spacing:0.8px;text-transform:uppercase;">Iron65 Concierge</div>
+          <div style="font-family:Cormorant Garamond,serif;color:#C8A96E;font-size:13px;font-weight:600">Jessica <span style="display:inline-block;width:6px;height:6px;background:#4ade80;border-radius:50%;margin-left:4px;vertical-align:middle"></span></div>
+          <div style="color:rgba(200,169,110,0.35);font-size:9px;letter-spacing:0.8px;text-transform:uppercase">Iron65 Concierge</div>
         </div>
       </div>
-      <span onclick="jClose()" style="color:rgba(200,169,110,0.4);cursor:pointer;font-size:18px;line-height:1;">&times;</span>
+      <span onclick="jtoggle()" style="color:rgba(200,169,110,0.4);cursor:pointer;font-size:18px">&times;</span>
     </div>
-    <div id="jm" style="padding:10px 12px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;">
-      <div class="jbot">Hi! I'm Jessica &#x1F44B; I'm here to help you find your perfect Iron65 home and book a tour. What can I help you with?</div>
-    </div>
-    <div id="jq" style="padding:8px 12px;display:flex;flex-wrap:wrap;gap:5px;border-top:1px solid rgba(200,169,110,0.08);"></div>
-    <div id="jf" style="display:none;padding:10px 12px;border-top:1px solid rgba(200,169,110,0.08);"></div>
-    <div id="js" style="display:none;padding:10px 12px;border-top:1px solid rgba(200,169,110,0.08);"></div>
-    <div id="jc" style="display:none;padding:12px;border-top:1px solid rgba(200,169,110,0.08);"></div>
-    <div id="ji" style="padding:8px 10px;border-top:1px solid rgba(200,169,110,0.08);display:flex;gap:6px;">
-      <input id="jin" type="text" placeholder="Type a message..." onkeydown="if(event.key==='Enter')jSend()" style="flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(200,169,110,0.12);border-radius:6px;padding:7px 10px;color:#f5f0e8;font-size:12px;outline:none;font-family:'Montserrat',sans-serif;" onfocus="this.style.borderColor='rgba(200,169,110,0.35)'" onblur="this.style.borderColor='rgba(200,169,110,0.12)'">
-      <button onclick="jSend()" style="width:34px;height:34px;background:#C8A96E;border:none;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+    <div id="jmsgs" style="padding:10px 12px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px"></div>
+    <div id="jpills" style="padding:8px 12px;display:none;flex-wrap:wrap;gap:5px;border-top:1px solid rgba(200,169,110,0.08)"></div>
+    <div id="jform" style="display:none;padding:10px 12px;border-top:1px solid rgba(200,169,110,0.08)"></div>
+    <div id="jslots" style="display:none;padding:10px 12px;border-top:1px solid rgba(200,169,110,0.08)"></div>
+    <div id="jconf" style="display:none;padding:12px;border-top:1px solid rgba(200,169,110,0.08)"></div>
+    <div id="jinbar" style="padding:8px 10px;border-top:1px solid rgba(200,169,110,0.08);display:flex;gap:6px">
+      <input id="jin" type="text" placeholder="Type a message..." onkeydown="if(event.key==='Enter')jsend()" style="flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(200,169,110,0.12);border-radius:6px;padding:7px 10px;color:#f5f0e8;font-size:12px;outline:none;font-family:Montserrat,sans-serif">
+      <button onclick="jsend()" style="width:34px;height:34px;background:#C8A96E;border:none;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
-    <div style="text-align:center;padding:4px 12px 7px;"><span style="font-size:9px;color:rgba(200,169,110,0.25);letter-spacing:0.5px;">IRON65 &middot; 65 McWhorter St, Newark NJ</span></div>
+    <div style="text-align:center;padding:4px 12px 7px"><span style="font-size:9px;color:rgba(200,169,110,0.2)">IRON65 · 65 McWhorter St, Newark NJ</span></div>
   </div>
   <style>
-    .jbot{background:#1c1a16;border:1px solid rgba(200,169,110,0.1);padding:8px 11px;border-radius:8px;border-top-left-radius:3px;color:rgba(245,240,232,0.8);font-size:12px;line-height:1.55;max-width:88%;font-family:'Montserrat',sans-serif;}
-    .jusr{background:#C8A96E;padding:8px 11px;border-radius:8px;border-top-right-radius:3px;color:#000;font-size:12px;line-height:1.5;max-width:88%;align-self:flex-end;font-family:'Montserrat',sans-serif;}
-    .jpill{background:transparent;border:1px solid rgba(200,169,110,0.25);color:rgba(200,169,110,0.85);font-size:10px;padding:5px 10px;border-radius:20px;cursor:pointer;font-family:'Montserrat',sans-serif;letter-spacing:0.5px;transition:all 0.2s;white-space:nowrap;}
-    .jpill:hover{background:rgba(200,169,110,0.08);border-color:#C8A96E;}
-    .jfld{background:rgba(255,255,255,0.03);border:1px solid rgba(200,169,110,0.18);border-radius:6px;padding:8px 10px;font-size:11px;color:#f5f0e8;margin-bottom:5px;width:100%;outline:none;font-family:'Montserrat',sans-serif;box-sizing:border-box;}
-    .jfld:focus{border-color:rgba(200,169,110,0.4);}
-    .jfld::placeholder{color:rgba(200,169,110,0.3);}
-    .jslot{background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.15);border-radius:6px;padding:7px 6px;font-size:10px;color:rgba(245,240,232,0.7);cursor:pointer;text-align:center;font-family:'Montserrat',sans-serif;transition:all 0.15s;}
-    .jslot:hover{background:rgba(200,169,110,0.18);border-color:#C8A96E;color:#C8A96E;}
-    @media(max-width:480px){#jp{width:calc(100vw - 24px)!important;right:12px!important;bottom:72px!important;}}
+    @media(max-width:480px){#jwin{width:calc(100vw - 24px)!important;right:12px!important;bottom:84px!important}}
   </style>
   <script>
-    var jH=[],jL={name:'',email:'',phone:'',unit:''},jSys="You are Jessica, Iron65's warm and friendly virtual leasing concierge. Your ONLY goal is to capture the visitor's name, email, phone number, and preferred unit — then book them a tour. Be conversational, never robotic.\n\nPRICING:\nStudio from $2,388 | Studio Flex from $2,499 | 1BR Flex from $2,650 | 1BR from $2,788 | Loft from $3,788\n\nKEY FACTS:\n- 65 McWhorter St, Newark NJ 07105\n- Built 2024, Ironbound District\n- 8-10 NYC blocks to Newark Penn (~10 min walk)\n- 20 min to Midtown via NJ Transit | 22 min to WTC via PATH | 5 min to EWR\n- No NYC income tax for NJ residents (saves $3K-$9K/yr)\n- Amenities: rooftop gym, yoga studio, cold plunge, saunas, rooftop terrace NYC views, outdoor kitchen, game room, 24-hr security, in-unit W/D, quartz countertops, fiber internet\n- Currently: Up to 1 month free on select units\n- Tours: Book directly in chat\n- Phone: (908) 699-6500\n\nCONVERSATION FLOW:\nStep 1: Greet warmly. The UI shows prefilled buttons so keep your greeting brief.\nStep 2: Answer their question in 2-3 sentences max, then nudge toward booking.\nStep 3: Once they pick a unit, the UI shows a form. Just confirm their choice warmly.\nStep 4: After form submitted, the UI shows time slots. Say thanks and tell them to pick a time.\nStep 5: After booking confirmed, say Ana will reach out to confirm.\n\nRULES:\n- Max 2-3 sentences per response\n- Always be moving toward booking\n- Never say 'I apologize' — if there is an issue say 'Let me get Ana to help — call (908) 699-6500'\n- Reference the current special: up to 1 month free on select units";
+    var jH=[],jL={name:'',email:'',phone:'',unit:''},jSys="You are Jessica, Iron65's warm and friendly virtual leasing concierge. Your ONLY goal is to capture the visitor's name, email, phone number, and preferred unit — then book them a tour. Be conversational, never robotic.\n\nPRICING:\nStudio from $2,388 | Studio Flex from $2,499 | 1BR Flex from $2,650 | 1BR from $2,788 | Loft from $3,788\n\nKEY FACTS:\n- 65 McWhorter St, Newark NJ 07105\n- Built 2024, Ironbound District\n- 8-10 NYC blocks to Newark Penn (~10 min walk)\n- 20 min to Midtown via NJ Transit | 22 min to WTC via PATH | 5 min to EWR\n- No NYC income tax for NJ residents (saves $3K-$9K/yr)\n- Amenities: rooftop gym, yoga studio, cold plunge, saunas, rooftop terrace NYC views, outdoor kitchen, game room, 24-hr security, in-unit W/D, quartz countertops, fiber internet\n- Currently: Up to 1 month free on select units\n- Tours: Book directly in chat\n- Phone: (908) 699-6500\n\nRULES:\n- Max 2-3 sentences per response\n- Always be moving toward booking\n- Never say 'I apologize' — say 'Let me get Ana to help — call (908) 699-6500'\n- Reference the current special: up to 1 month free on select units";
     var jSlots=['Sat 1:00 PM','Sat 3:00 PM','Sun 1:00 PM','Sun 2:00 PM','Tue 12:00 PM','Wed 2:00 PM','Thu 3:00 PM','Fri 12:00 PM'];
-
-    function jOpen(){var p=document.getElementById('jp'),b=document.getElementById('jb');p.style.display='block';b.style.transform='scale(0)';setTimeout(function(){b.style.display='none';},150);jShowPills(['\u{1F4C5} Book a Tour','\u{1F4B0} See Pricing','\u{1F3CB} Amenities','\u{1F687} Transit Info']);}
-    function jClose(){var p=document.getElementById('jp'),b=document.getElementById('jb');p.style.display='none';b.style.display='flex';setTimeout(function(){b.style.transform='scale(1)';},10);}
-
-    function jAddBot(t){var m=document.getElementById('jm');var d=document.createElement('div');d.className='jbot';d.innerHTML=t;m.appendChild(d);m.scrollTop=m.scrollHeight;}
-    function jAddUsr(t){var m=document.getElementById('jm');var d=document.createElement('div');d.className='jusr';d.textContent=t;m.appendChild(d);m.scrollTop=m.scrollHeight;}
-
-    function jShowPills(arr){var q=document.getElementById('jq');q.innerHTML='';q.style.display='flex';arr.forEach(function(label){var b=document.createElement('button');b.className='jpill';b.textContent=label;b.onclick=function(){jPillClick(label);};q.appendChild(b);});}
-    function jHidePills(){document.getElementById('jq').style.display='none';}
-
-    function jPillClick(label){
-      jHidePills();
-      var clean=label.replace(/^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]\s*/u,'').trim();
-      jAddUsr(clean);
-      if(label.includes('Book a Tour')){
-        jAddBot('Great choice! What size unit are you looking for?');
-        jShowPills(['Studio $2,388+','Studio Flex $2,499+','1BR Flex $2,650+','1BR $2,788+','Loft $3,788+']);
-      } else if(label.includes('
-</html>)){
-        jL.unit=clean;
-        jAddBot('Perfect choice! Just a few quick details and I\u2019ll show you available tour times:');
-        jShowForm();
-      } else if(label.includes('Pricing')){
-        jAddBot('Studios from <strong>$2,388</strong>, Studio Flex from <strong>$2,499</strong>, 1BR Flex from <strong>$2,650</strong>, 1BR from <strong>$2,788</strong>, and Lofts from <strong>$3,788</strong>. Plus, we have up to 1 month free on select units right now!');
-        setTimeout(function(){jShowPills(['\u{1F4C5} Ready to see it in person?']);},400);
-      } else if(label.includes('Ready to see')){
-        jAddBot('Awesome! What size unit interests you?');
-        jShowPills(['Studio $2,388+','Studio Flex $2,499+','1BR Flex $2,650+','1BR $2,788+','Loft $3,788+']);
-      } else if(label.includes('Amenities')){
-        jAddBot('We have a <strong>rooftop gym</strong> with NYC skyline views, <strong>yoga studio</strong>, <strong>cold plunge & saunas</strong>, outdoor kitchen, game room, 24-hr security, in-unit W/D, quartz countertops, and fiber internet. It\u2019s all included!');
-        setTimeout(function(){jShowPills(['\u{1F4C5} Book a Tour']);},400);
-      } else if(label.includes('Transit')){
-        jAddBot('<strong>10 min walk</strong> to Newark Penn Station. <strong>20 min</strong> to Midtown via NJ Transit, <strong>22 min</strong> to WTC via PATH, and <strong>5 min</strong> to EWR Airport. No NYC income tax saves you $3K\u2013$9K/yr!');
-        setTimeout(function(){jShowPills(['\u{1F4C5} Book a Tour']);},400);
-      } else {
-        jApiCall(clean);
-      }
-    }
-
-    function jShowForm(){
-      jHidePills();
-      var f=document.getElementById('jf');
-      f.style.display='block';
-      f.innerHTML='<input class="jfld" id="jfn" placeholder="Your name" autocomplete="given-name"><input class="jfld" id="jfe" type="email" placeholder="Email address" autocomplete="email"><input class="jfld" id="jfp" type="tel" placeholder="Phone (optional)" autocomplete="tel"><button onclick="jSubmitForm()" style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;">Get Tour Times \u2192</button>';
-      document.getElementById('jfn').focus();
-    }
-
-    function jSubmitForm(){
-      var n=document.getElementById('jfn').value.trim();
-      var e=document.getElementById('jfe').value.trim();
-      var p=document.getElementById('jfp').value.trim();
-      if(!n||!e){jAddBot('I just need your name and email to pull up tour times!');return;}
-      jL.name=n;jL.email=e;jL.phone=p;
-      document.getElementById('jf').style.display='none';
-      jAddUsr(n+' \u2022 '+e+(p?' \u2022 '+p:''));
-      jAddBot('Thanks, '+n+'! Pick a time that works for you:');
-      jShowSlots();
-    }
-
-    function jShowSlots(){
-      var s=document.getElementById('js');
-      s.style.display='block';
-      s.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">'+jSlots.map(function(t){return '<button class="jslot" onclick="jBook(\u0027'+t+'\u0027)">'+t+'</button>';}).join('')+'</div>';
-    }
-
-    function jBook(slot){
-      document.getElementById('js').style.display='none';
-      document.getElementById('ji').style.display='none';
-      jAddBot('You\u2019re booked, '+jL.name+'! \u{1F389}');
-      var c=document.getElementById('jc');
-      c.style.display='block';
-      c.innerHTML='<div style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.2);border-radius:8px;padding:12px;font-size:11px;line-height:1.8;color:rgba(245,240,232,0.75);">'
-        +'<div style="text-align:center;font-size:20px;margin-bottom:4px;">\u2705</div>'
-        +'<div style="text-align:center;color:#C8A96E;font-weight:700;font-size:13px;margin-bottom:8px;">Tour Confirmed</div>'
-        +'<strong>'+jL.name+'</strong><br>'
-        +(jL.email?jL.email+'<br>':'')
-        +'<strong>'+slot+'</strong><br>'
-        +'65 McWhorter St, Newark NJ 07105<br><br>'
-        +'<div style="text-align:center;margin-bottom:6px;"><a href="https://calendly.com/ana-rosaliagroup/65-iron-tour" target="_blank" style="display:inline-block;background:#C8A96E;color:#000;padding:7px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;">Add to Calendar</a></div>'
-        +'<div style="text-align:center;color:rgba(200,169,110,0.5);font-size:9px;">Ana will call/text to confirm within the hour</div>'
-        +'</div>';
-    }
-
-    async function jApiCall(msg){
-      jH.push({role:'user',content:msg});
-      var m=document.getElementById('jm');
-      var typ=document.createElement('div');typ.className='jbot';typ.id='jtyp';typ.textContent='Jessica is typing...';typ.style.color='rgba(200,169,110,0.4)';typ.style.fontStyle='italic';m.appendChild(typ);m.scrollTop=m.scrollHeight;
-      try{
-        var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:jSys,messages:jH})});
-        var d=await r.json();var t=document.getElementById('jtyp');if(t)t.remove();
-        var reply=d.content&&d.content[0]?d.content[0].text:'Let me get Ana to help \u2014 call (908) 699-6500!';
-        jH.push({role:'assistant',content:reply});
-        jAddBot(reply.replace(/</g,'&lt;').replace(/\n/g,'<br>'));
-        if(reply.toLowerCase().includes('book')||reply.toLowerCase().includes('tour')||reply.toLowerCase().includes('visit')){
-          setTimeout(function(){jShowPills(['\u{1F4C5} Book a Tour']);},500);
-        }
-      }catch(e){var t=document.getElementById('jtyp');if(t)t.remove();
-        jAddBot('Let me get Ana to help \u2014 call <a href="tel:9086996500" style="color:#C8A96E;">(908) 699-6500</a>!');}
-    }
-
-    async function jSend(){
-      var input=document.getElementById('jin');
-      var msg=input.value.trim();if(!msg)return;input.value='';
-      jAddUsr(msg);jHidePills();
-      jApiCall(msg);
-    }
+    function jtoggle(){var w=document.getElementById('jwin'),b=document.getElementById('jbtn');if(w.style.display==='none'){w.style.display='block';b.style.transform='scale(0)';setTimeout(function(){b.style.display='none'},150);if(!document.getElementById('jmsgs').children.length){jbot('Hi! I\u2019m Jessica \u{1F44B} I\u2019m here to help you find your perfect Iron65 home and book a tour. What can I help with?');jpill(['\u{1F4C5} Book a Tour','\u{1F4B0} Pricing','\u{1F3CB}\uFE0F Amenities','\u{1F687} Transit']);}}else{w.style.display='none';b.style.display='flex';setTimeout(function(){b.style.transform='scale(1)'},10);}}
+    function jbot(t){var m=document.getElementById('jmsgs');var d=document.createElement('div');d.style.cssText='background:#1c1a16;border:1px solid rgba(200,169,110,0.1);padding:8px 11px;border-radius:8px;border-top-left-radius:3px;color:rgba(245,240,232,0.8);font-size:12px;line-height:1.55;max-width:88%';d.innerHTML=t;m.appendChild(d);m.scrollTop=m.scrollHeight;}
+    function jusr(t){var m=document.getElementById('jmsgs');var d=document.createElement('div');d.style.cssText='background:#C8A96E;padding:8px 11px;border-radius:8px;border-top-right-radius:3px;color:#000;font-size:12px;line-height:1.5;max-width:88%;align-self:flex-end';d.textContent=t;m.appendChild(d);m.scrollTop=m.scrollHeight;}
+    function jpill(arr){var q=document.getElementById('jpills');q.innerHTML='';q.style.display='flex';arr.forEach(function(l){var b=document.createElement('button');b.textContent=l;b.style.cssText='background:transparent;border:1px solid rgba(200,169,110,0.25);color:rgba(200,169,110,0.85);font-size:10px;padding:5px 10px;border-radius:20px;cursor:pointer;font-family:Montserrat,sans-serif;letter-spacing:0.5px;transition:all 0.2s;white-space:nowrap';b.onmouseover=function(){this.style.background='rgba(200,169,110,0.08)';this.style.borderColor='#C8A96E'};b.onmouseout=function(){this.style.background='transparent';this.style.borderColor='rgba(200,169,110,0.25)'};b.onclick=function(){jpclick(l)};q.appendChild(b)});}
+    function jhidepills(){document.getElementById('jpills').style.display='none';}
+    function jpclick(l){jhidepills();var c=l.replace(/^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\uFE0F]\s*/gu,'').trim();jusr(c);if(l.includes('Book a Tour')){jbot('Great choice! What size unit are you looking for?');jpill(['Studio $2,388+','Studio Flex $2,499+','1BR Flex $2,650+','1BR $2,788+','Loft $3,788+']);}else if(l.includes('
+</html>)){jL.unit=c;jbot('Perfect! Just a few quick details and I\u2019ll show you tour times:');jshowform();}else if(l.includes('Pricing')){jbot('Studios from <strong>$2,388</strong>, Studio Flex <strong>$2,499</strong>, 1BR Flex <strong>$2,650</strong>, 1BR <strong>$2,788</strong>, Lofts <strong>$3,788</strong>. Plus up to 1 month free on select units!');setTimeout(function(){jpill(['\u{1F4C5} Ready to see it in person?'])},400);}else if(l.includes('Ready')){jbot('Awesome! What size interests you?');jpill(['Studio $2,388+','Studio Flex $2,499+','1BR Flex $2,650+','1BR $2,788+','Loft $3,788+']);}else if(l.includes('Amenities')){jbot('<strong>Rooftop gym</strong> with NYC views, <strong>yoga studio</strong>, <strong>cold plunge & saunas</strong>, outdoor kitchen, game room, 24-hr security, in-unit W/D, quartz countertops, fiber internet. All included!');setTimeout(function(){jpill(['\u{1F4C5} Book a Tour'])},400);}else if(l.includes('Transit')){jbot('<strong>10 min walk</strong> to Newark Penn. <strong>20 min</strong> to Midtown, <strong>22 min</strong> to WTC via PATH, <strong>5 min</strong> to EWR. No NYC income tax saves $3K\u2013$9K/yr!');setTimeout(function(){jpill(['\u{1F4C5} Book a Tour'])},400);}else{japi(c);}}
+    function jshowform(){jhidepills();var f=document.getElementById('jform');f.style.display='block';f.innerHTML='<input id="jfn" placeholder="Your name" style="background:rgba(255,255,255,0.03);border:1px solid rgba(200,169,110,0.18);border-radius:6px;padding:8px 10px;font-size:11px;color:#f5f0e8;margin-bottom:5px;width:100%;outline:none;font-family:Montserrat,sans-serif;box-sizing:border-box"><input id="jfe" type="email" placeholder="Email address" style="background:rgba(255,255,255,0.03);border:1px solid rgba(200,169,110,0.18);border-radius:6px;padding:8px 10px;font-size:11px;color:#f5f0e8;margin-bottom:5px;width:100%;outline:none;font-family:Montserrat,sans-serif;box-sizing:border-box"><input id="jfp" type="tel" placeholder="Phone (optional)" style="background:rgba(255,255,255,0.03);border:1px solid rgba(200,169,110,0.18);border-radius:6px;padding:8px 10px;font-size:11px;color:#f5f0e8;margin-bottom:5px;width:100%;outline:none;font-family:Montserrat,sans-serif;box-sizing:border-box"><button onclick="jsubmit()" style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif">Get Tour Times \u2192</button>';document.getElementById('jfn').focus();}
+    function jsubmit(){var n=document.getElementById('jfn').value.trim(),e=document.getElementById('jfe').value.trim(),p=document.getElementById('jfp').value.trim();if(!n||!e){jbot('I just need your name and email to pull up times!');return;}jL.name=n;jL.email=e;jL.phone=p;document.getElementById('jform').style.display='none';jusr(n+' \u2022 '+e+(p?' \u2022 '+p:''));jbot('Thanks, '+n+'! Pick a time that works:');jshowslots();}
+    function jshowslots(){var s=document.getElementById('jslots');s.style.display='block';s.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">'+jSlots.map(function(t){return '<button onclick="jbook(\''+t+'\')" style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.15);border-radius:6px;padding:7px 6px;font-size:10px;color:rgba(245,240,232,0.7);cursor:pointer;text-align:center;font-family:Montserrat,sans-serif;transition:all 0.15s" onmouseover="this.style.background=\'rgba(200,169,110,0.18)\';this.style.borderColor=\'#C8A96E\';this.style.color=\'#C8A96E\'" onmouseout="this.style.background=\'rgba(200,169,110,0.06)\';this.style.borderColor=\'rgba(200,169,110,0.15)\';this.style.color=\'rgba(245,240,232,0.7)\'">'+t+'</button>'}).join('')+'</div>';}
+    function jbook(slot){document.getElementById('jslots').style.display='none';document.getElementById('jinbar').style.display='none';jbot('You\u2019re booked, '+jL.name+'! \u{1F389}');var c=document.getElementById('jconf');c.style.display='block';c.innerHTML='<div style="background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.2);border-radius:8px;padding:12px;font-size:11px;line-height:1.8;color:rgba(245,240,232,0.75)"><div style="text-align:center;font-size:20px;margin-bottom:4px">\u2705</div><div style="text-align:center;color:#C8A96E;font-weight:700;font-size:13px;margin-bottom:8px">Tour Confirmed</div><strong>'+jL.name+'</strong><br>'+jL.email+'<br><strong>'+slot+'</strong><br>65 McWhorter St, Newark NJ 07105<br><br><div style="text-align:center;margin-bottom:6px"><a href="https://calendly.com/ana-rosaliagroup/65-iron-tour" target="_blank" style="display:inline-block;background:#C8A96E;color:#000;padding:7px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase">Add to Calendar</a></div><div style="text-align:center;color:rgba(200,169,110,0.5);font-size:9px">Ana will call/text to confirm within the hour</div></div>';}
+    async function japi(msg){jH.push({role:'user',content:msg});var m=document.getElementById('jmsgs');var t=document.createElement('div');t.id='jtyp';t.style.cssText='color:rgba(200,169,110,0.4);font-size:11px;font-style:italic;padding:4px';t.textContent='Jessica is typing...';m.appendChild(t);m.scrollTop=m.scrollHeight;try{var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:jSys,messages:jH})});var d=await r.json();var el=document.getElementById('jtyp');if(el)el.remove();var reply=d.content&&d.content[0]?d.content[0].text:'Let me get Ana to help \u2014 call (908) 699-6500!';jH.push({role:'assistant',content:reply});jbot(reply.replace(/</g,'&lt;').replace(/\n/g,'<br>'));if(reply.toLowerCase().match(/book|tour|visit/))setTimeout(function(){jpill(['\u{1F4C5} Book a Tour'])},500);}catch(e){var el=document.getElementById('jtyp');if(el)el.remove();jbot('Let me get Ana to help \u2014 call <a href="tel:9086996500" style="color:#C8A96E">(908) 699-6500</a>!');}}
+    async function jsend(){var input=document.getElementById('jin');var msg=input.value.trim();if(!msg)return;input.value='';jusr(msg);jhidepills();japi(msg);}
   </script>
 </body>
 </html>
