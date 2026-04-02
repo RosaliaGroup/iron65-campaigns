@@ -40,7 +40,7 @@
 <body>
   <nav style="position:fixed;top:0;left:0;right:0;z-index:200;padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(200,169,110,0.12)">
   <img src="/images/Iron-65-logo-gold-1-300x281.png" alt="Iron65" style="height:36px;width:auto">
-  <a href="https://silver-ganache-1ee2ca.netlify.app/booking-form" target="_blank" style="background:#C8A96E;color:#000;border:none;padding:9px 20px;font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;border-radius:4px">BOOK A TOUR</a>
+  <a href="https://calendly.com/ana-rosaliagroup/65-iron-tour" target="_blank" style="background:#C8A96E;color:#000;border:none;padding:9px 20px;font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;border-radius:4px">BOOK A TOUR</a>
 </nav>
 <div style="height:60px"></div>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
@@ -179,7 +179,7 @@
       try{
         await fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,phone:phone,source:'campaign-form',page:window.location.pathname,message:unit,status:'new'})});
         var section=document.getElementById('lead-form-section');
-        if(section){section.innerHTML='<div style="text-align:center;padding:60px 20px;max-width:600px;margin:0 auto"><div style="font-size:48px;margin-bottom:16px">\u2713</div><div style="font-family:Cormorant Garamond,serif;font-size:36px;color:#C8A96E;margin-bottom:16px">Thank You, '+name+'!</div><p style="color:rgba(245,240,232,0.6);font-size:14px;line-height:1.7;margin-bottom:24px">Ana will reach out within the hour.<br>Call or text anytime: <a href="tel:9086996500" style="color:#C8A96E">(908) 699-6500</a></p><a href="https://silver-ganache-1ee2ca.netlify.app/booking-form" target="_blank" style="display:inline-block;background:#C8A96E;color:#000;padding:14px 32px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border-radius:6px;margin-top:8px">Complete Your Booking \u2192</a></div>';}
+        if(section){section.innerHTML='<div style="text-align:center;padding:60px 20px;max-width:600px;margin:0 auto"><div style="font-size:48px;margin-bottom:16px">\u2713</div><div style="font-family:Cormorant Garamond,serif;font-size:36px;color:#C8A96E;margin-bottom:16px">Thank You, '+name+'!</div><p style="color:rgba(245,240,232,0.6);font-size:14px;line-height:1.7;margin-bottom:24px">Ana will reach out within the hour.<br>Call or text anytime: <a href="tel:9086996500" style="color:#C8A96E">(908) 699-6500</a></p><a href="https://calendly.com/ana-rosaliagroup/65-iron-tour" target="_blank" style="display:inline-block;background:#C8A96E;color:#000;padding:14px 32px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border-radius:6px;margin-top:8px">Complete Your Booking \u2192</a></div>';}
       }catch(e){
         if(btn){btn.disabled=false;btn.textContent='REQUEST INFORMATION';}
         alert('Submission failed. Please call Ana: (908) 699-6500');
