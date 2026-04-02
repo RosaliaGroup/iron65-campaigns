@@ -293,12 +293,11 @@
       </button>
     </div>
   </div>
-  
   <!-- Jessica Chatbot -->
   <div id="jessica-bubble" onclick="toggleJessica()" style="position:fixed;bottom:24px;right:24px;width:64px;height:64px;background:var(--i65-gold, #C8A96E);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(200,169,110,0.45);z-index:10000;transition:transform 0.2s ease;">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
   </div>
-  <div id="jessica-panel" style="display:none;position:fixed;bottom:100px;right:24px;width:390px;max-height:540px;background:var(--i65-card, #141210);border:1px solid rgba(200,169,110,0.3);border-radius:16px;overflow:hidden;z-index:10000;box-shadow:0 12px 48px rgba(0,0,0,0.6);font-family:'Montserrat',sans-serif;">
+  <div id="jessica-panel" style="display:none;position:fixed;bottom:100px;right:24px;width:390px;max-height:580px;background:var(--i65-card, #141210);border:1px solid rgba(200,169,110,0.3);border-radius:16px;overflow:hidden;z-index:10000;box-shadow:0 12px 48px rgba(0,0,0,0.6);font-family:'Montserrat',sans-serif;">
     <div style="background:var(--i65-gold, #C8A96E);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="width:32px;height:32px;background:#080808;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">&#x1F44B;</div>
@@ -309,42 +308,109 @@
       </div>
       <span onclick="toggleJessica()" style="color:#080808;cursor:pointer;font-size:22px;line-height:1;font-weight:300;">&times;</span>
     </div>
-    <div id="jessica-messages" style="padding:16px;height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;">
+    <div id="jessica-messages" style="padding:16px;height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;">
       <div style="background:var(--i65-dark, #0f0d09);padding:12px 16px;border-radius:12px;border-top-left-radius:4px;color:#ccc;font-size:14px;line-height:1.6;max-width:88%;">
-        Hi! I'm Jessica, your Iron65 leasing concierge. &#x1F44B; I can help with pricing, amenities, neighborhood info, or booking a tour. What would you like to know?
+        Hey there! &#x1F44B; I'm Jessica, your Iron65 concierge. We've got up to 1 month free on select units right now! What brings you here today?
       </div>
     </div>
-    <div style="padding:12px;border-top:1px solid #333;display:flex;gap:8px;">
+    <div id="jessica-booking" style="display:none;padding:16px;border-top:1px solid #333;">
+      <div style="color:#C8A96E;font-weight:600;font-size:13px;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">Pick a tour time:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="jessica-slots"></div>
+    </div>
+    <div id="jessica-confirmed" style="display:none;padding:20px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:8px;">&#x2705;</div>
+      <div style="color:#C8A96E;font-weight:700;font-size:16px;margin-bottom:4px;">Tour Booked!</div>
+      <div id="jessica-confirm-details" style="color:#ccc;font-size:13px;line-height:1.8;margin-bottom:16px;"></div>
+      <a href="https://calendly.com/ana-rosaliagroup/65-iron-tour" target="_blank" style="display:inline-block;background:#C8A96E;color:#080808;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:13px;margin-bottom:8px;">Confirm on Calendly</a>
+      <div style="color:#888;font-size:12px;margin-top:8px;">Ana will call/text to confirm within the hour!</div>
+    </div>
+    <div id="jessica-input-wrap" style="padding:12px;border-top:1px solid #333;display:flex;gap:8px;">
       <input id="jessica-input" type="text" placeholder="Ask Jessica anything..." onkeydown="if(event.key==='Enter')sendJessicaMsg()" style="flex:1;background:var(--i65-dark, #0f0d09);border:1px solid #333;border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;font-family:'Montserrat',sans-serif;" onfocus="this.style.borderColor='#C8A96E'" onblur="this.style.borderColor='#333'">
-      <button onclick="sendJessicaMsg()" style="background:var(--i65-gold, #C8A96E);border:none;border-radius:8px;padding:10px 16px;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      <button onclick="sendJessicaMsg()" style="background:var(--i65-gold, #C8A96E);border:none;border-radius:8px;padding:10px 16px;cursor:pointer;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
   </div>
   <script>
+    var jessicaHistory=[];
+    var jessicaLead={name:'',email:'',phone:'',unit:''};
+    var jessicaSystem="You are Jessica, Iron65's warm and friendly virtual leasing concierge. Your ONLY goal is to capture the visitor's name, email, phone number, and preferred unit — then book them a tour. Be conversational, never robotic.\n\nPRICING:\nStudio from $2,388 | Studio Flex from $2,499 | 1BR Flex from $2,650 | 1BR from $2,788 | Loft from $3,788\n\nKEY FACTS:\n- 65 McWhorter St, Newark NJ 07105\n- Built 2024, Ironbound District\n- 8-10 NYC blocks to Newark Penn (~10 min walk)\n- 20 min to Midtown via NJ Transit | 22 min to WTC via PATH | 5 min to EWR\n- No NYC income tax for NJ residents (saves $3K-$9K/yr)\n- Amenities: rooftop gym, yoga studio, cold plunge, saunas, rooftop terrace NYC views, outdoor kitchen, game room, 24-hr security, in-unit W/D, quartz countertops, fiber internet\n- Currently: Up to 1 month free on select units\n- Tours: calendly.com/ana-rosaliagroup/65-iron-tour\n- Phone: (908) 699-6500\n\nCONVERSATION FLOW — follow this sequence:\nStep 1: Greet warmly, ask what brings them here today\nStep 2: Answer their question briefly, then ask their name\nStep 3: Once you have their name, use it. Ask what unit size interests them\nStep 4: Give a quick pricing answer, then ask for their email so Ana can send details\nStep 5: Ask for their phone number (say it is optional but helpful)\nStep 6: Say 'Perfect! Let me pull up tour times for you' then the booking widget shows automatically\nStep 7: After booking confirmed, say Ana will reach out to confirm\n\nRULES:\n- Max 2-3 sentences per response\n- Always be moving toward capturing name then email then phone then booking\n- If they just say 'book appointment' or 'tour' go straight to collecting their info\n- Never say 'I apologize' — if there is an issue say 'Let me get Ana to help — call (908) 699-6500'\n- Use the visitor's name once you have it\n- Reference the current special: up to 1 month free on select units";
+    var tourSlots=['Saturday 1:00 PM','Saturday 3:00 PM','Sunday 1:00 PM','Sunday 2:00 PM','Tuesday 12:00 PM','Wednesday 2:00 PM','Thursday 3:00 PM','Friday 12:00 PM'];
+
     function toggleJessica(){
       var p=document.getElementById('jessica-panel');
       var b=document.getElementById('jessica-bubble');
       if(p.style.display==='none'){p.style.display='block';b.style.transform='scale(0)';setTimeout(function(){b.style.display='none';},200);document.getElementById('jessica-input').focus();}
       else{p.style.display='none';b.style.display='flex';setTimeout(function(){b.style.transform='scale(1)';},10);}
     }
-    var jessicaHistory=[];
+
+    function detectLead(text){
+      var emailMatch=text.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/);
+      if(emailMatch)jessicaLead.email=emailMatch[0];
+      var phoneMatch=text.match(/(?:\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/);
+      if(phoneMatch)jessicaLead.phone=phoneMatch[0];
+    }
+
+    function checkShowBooking(reply){
+      detectLead(reply);
+      var r=reply.toLowerCase();
+      if(r.includes('pull up tour') || r.includes('tour times') || r.includes('pick a time') || r.includes('schedule') || (jessicaLead.email && (jessicaLead.phone || jessicaHistory.length>=8))){
+        showBookingSlots();
+      }
+    }
+
+    function showBookingSlots(){
+      var el=document.getElementById('jessica-booking');
+      var sl=document.getElementById('jessica-slots');
+      el.style.display='block';
+      sl.innerHTML='';
+      tourSlots.forEach(function(slot){
+        var btn=document.createElement('button');
+        btn.textContent=slot;
+        btn.style.cssText='background:#1a1a1a;color:#ccc;border:1px solid #333;border-radius:8px;padding:10px 8px;font-size:12px;cursor:pointer;font-family:Montserrat,sans-serif;transition:all 0.2s;';
+        btn.onmouseover=function(){this.style.borderColor='#C8A96E';this.style.color='#C8A96E';};
+        btn.onmouseout=function(){this.style.borderColor='#333';this.style.color='#ccc';};
+        btn.onclick=function(){confirmBooking(slot);};
+        sl.appendChild(btn);
+      });
+    }
+
+    function confirmBooking(slot){
+      document.getElementById('jessica-booking').style.display='none';
+      document.getElementById('jessica-input-wrap').style.display='none';
+      var det=document.getElementById('jessica-confirm-details');
+      var lines=[];
+      if(jessicaLead.name)lines.push('<strong>Name:</strong> '+jessicaLead.name);
+      if(jessicaLead.email)lines.push('<strong>Email:</strong> '+jessicaLead.email);
+      if(jessicaLead.phone)lines.push('<strong>Phone:</strong> '+jessicaLead.phone);
+      lines.push('<strong>Tour:</strong> '+slot);
+      det.innerHTML=lines.join('<br>');
+      document.getElementById('jessica-confirmed').style.display='block';
+      var msgs=document.getElementById('jessica-messages');
+      msgs.innerHTML+='<div style="background:var(--i65-dark, #0f0d09);padding:12px 16px;border-radius:12px;border-top-left-radius:4px;color:#ccc;font-size:14px;line-height:1.6;max-width:88%;">Awesome'+(jessicaLead.name?', '+jessicaLead.name:'')+'! You\'re booked for <strong>'+slot+'</strong>. Ana will call or text you to confirm within the hour. See you soon! &#x1F3E0;</div>';
+      msgs.scrollTop=msgs.scrollHeight;
+    }
+
     async function sendJessicaMsg(){
       var input=document.getElementById('jessica-input');
       var msg=input.value.trim();if(!msg)return;input.value='';
+      detectLead(msg);
       var msgs=document.getElementById('jessica-messages');
       msgs.innerHTML+='<div style="background:rgba(200,169,110,0.12);padding:12px 16px;border-radius:12px;border-top-right-radius:4px;color:#fff;font-size:14px;line-height:1.5;max-width:88%;align-self:flex-end;">'+msg.replace(/</g,'&lt;')+'</div>';
       msgs.innerHTML+='<div id="jessica-typing" style="color:#888;font-size:13px;padding:4px 16px;">Jessica is typing...</div>';
       msgs.scrollTop=msgs.scrollHeight;
       jessicaHistory.push({role:'user',content:msg});
       try{
-        var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':window.ANTHROPIC_KEY||'','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:"You are Jessica, Iron65's virtual leasing concierge. Warm, friendly, never pushy. Studios from $2,388 | Studio Flex from $2,499 | 1BR Flex from $2,650 | 1BR from $2,788 | Loft from $3,788. 8-10 NYC blocks to Newark Penn (~10 min walk). 20 min to Midtown. 22 min to WTC via PATH. 5 min to EWR. No NYC income tax for NJ residents. Up to 69% lower carbon emissions vs driving (NJ Transit data). Amenities: rooftop gym, yoga studio, cold plunge, saunas, rooftop terrace NYC views, outdoor kitchen, 24-hr security, in-unit W/D, quartz countertops, fiber internet. Address: 65 McWhorter St, Newark NJ 07105. Book tours: calendly.com/ana-rosaliagroup/65-iron-tour. Phone: (908) 699-6500. Email: ana@rosaliagroup.com. When someone wants to book: collect name, email, phone, unit preference, then show time slots. Never fabricate information.",messages:jessicaHistory})});
-        var d=await r.json();var t=document.getElementById('jessica-typing');if(t)t.remove();
-        var reply=d.content&&d.content[0]?d.content[0].text:'I apologize — please contact us directly at (908) 699-6500 or ana@rosaliagroup.com.';
+        var r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:jessicaSystem,messages:jessicaHistory})});
+        var d=await r.json();
+        var t=document.getElementById('jessica-typing');if(t)t.remove();
+        var reply=d.content&&d.content[0]?d.content[0].text:'Let me get Ana to help \u2014 call (908) 699-6500!';
         jessicaHistory.push({role:'assistant',content:reply});
+        if(!jessicaLead.name){var nameGuess=reply.match(/(?:nice to meet you|hi|hey|hello|thanks),?\s+([A-Z][a-z]+)/i);if(nameGuess)jessicaLead.name=nameGuess[1];var userNameGuess=msg.match(/(?:^|(?:my name is|i'm|i am|it's|call me)\s+)([A-Z][a-z]+)/i);if(userNameGuess)jessicaLead.name=userNameGuess[1];}
         msgs.innerHTML+='<div style="background:var(--i65-dark, #0f0d09);padding:12px 16px;border-radius:12px;border-top-left-radius:4px;color:#ccc;font-size:14px;line-height:1.6;max-width:88%;">'+reply.replace(/</g,'&lt;').replace(/\n/g,'<br>')+'</div>';
+        checkShowBooking(reply);
       }catch(e){var t=document.getElementById('jessica-typing');if(t)t.remove();
-        msgs.innerHTML+='<div style="background:var(--i65-dark, #0f0d09);padding:12px 16px;border-radius:12px;border-top-left-radius:4px;color:#ccc;font-size:14px;line-height:1.6;max-width:88%;">I\'m having trouble connecting right now. Please call us at (908) 699-6500 or email ana@rosaliagroup.com — we\'d love to help!</div>';}
+        msgs.innerHTML+='<div style="background:var(--i65-dark, #0f0d09);padding:12px 16px;border-radius:12px;border-top-left-radius:4px;color:#ccc;font-size:14px;line-height:1.6;max-width:88%;">Let me get Ana to help \u2014 call <a href="tel:9086996500" style="color:#C8A96E;">(908) 699-6500</a> or email <a href="mailto:ana@rosaliagroup.com" style="color:#C8A96E;">ana@rosaliagroup.com</a>!</div>';}
       msgs.scrollTop=msgs.scrollHeight;
     }
   </script>
