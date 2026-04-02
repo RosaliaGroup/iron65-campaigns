@@ -82,7 +82,7 @@ function jshowform(){
     +'<input class="jfld" id="jfn" type="text" placeholder="Your full name *">'
     +'<input class="jfld" id="jfe" type="email" placeholder="Email address *">'
     +'<input class="jfld" id="jfp" type="tel" placeholder="Phone number *">'
-    +'<button onclick="jsubmit()" style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;margin-top:4px">Next \u2014 Qualifying Questions \u2192</button>'
+    +'<button onclick="jsubmit()" style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;margin-top:4px">Continue \u2192</button>'
     +'</div>';
   setTimeout(function(){var el=document.getElementById('jfn');if(el)el.focus();},100);
 }
@@ -101,147 +101,25 @@ function jsubmit(){
   jL.name=n;jL.email=e;jL.phone=p;
   document.getElementById('jform').style.display='none';
   jusr(n+' \u2022 '+e+' \u2022 '+p);
-  jbot('Thanks '+n+'! A few quick questions to make sure Ana is prepared for your visit:');
 
-  // Save initial lead
+  // Save lead
   fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,email:e,phone:p,source:'jessica-chatbot',page:window.location.pathname,message:jL.unit||'',status:'new'})}).catch(function(){});
 
-  setTimeout(jshowPreQual,400);
+  jbot('Perfect, '+n+'! I\u2019m opening our tour booking form for you \u2014 it takes about 60 seconds to complete and you\u2019ll pick your exact date and time there. \uD83D\uDCCB');
+
+  setTimeout(function(){
+    var m=document.getElementById('jmsgs');
+    var d=document.createElement('div');
+    d.innerHTML='<a href="https://silver-ganache-1ee2ca.netlify.app/booking-form" target="_blank" style="display:block;text-align:center;background:#C8A96E;color:#000;padding:12px;font-size:11px;font-weight:700;letter-spacing:2px;text-decoration:none;border-radius:6px;margin:8px 2px;font-family:Montserrat,sans-serif;text-transform:uppercase">\uD83D\uDCCB Open Booking Form \u2192</a>';
+    m.appendChild(d);m.scrollTop=m.scrollHeight;
+
+    setTimeout(function(){
+      jbot('Once you submit the form, Ana will confirm your tour by text within the hour. Any questions in the meantime? \uD83D\uDE0A');
+    },600);
+  },400);
 }
 
-function jshowPreQual(){
-  jpreqAnswers={};
-  var f=document.getElementById('jform');f.style.display='block';
-  f.innerHTML='<div style="padding:0 4px;width:100%;box-sizing:border-box;font-family:Montserrat,sans-serif">'
-    +'<div style="font-size:9px;color:#C8A96E;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;margin-top:4px">When are you looking to move in?</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px" id="grp-move">'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'move\',\'ASAP \u2014 within 30 days\',\'grp-move\')">ASAP</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'move\',\'1\u20132 months\',\'grp-move\')">1\u20132 months</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'move\',\'3\u20136 months\',\'grp-move\')">3\u20136 months</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'move\',\'Just exploring\',\'grp-move\')">Just exploring</button>'
-    +'</div>'
-    +'<div style="font-size:9px;color:#C8A96E;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">Monthly budget?</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px" id="grp-budget">'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'budget\',\'Under $2,500/mo\',\'grp-budget\')">Under $2,500</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'budget\',\'$2,500\u2013$3,000/mo\',\'grp-budget\')">$2,500\u2013$3,000</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'budget\',\'$3,000\u2013$4,000/mo\',\'grp-budget\')">$3,000\u2013$4,000</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'budget\',\'$4,000+/mo\',\'grp-budget\')">$4,000+</button>'
-    +'</div>'
-    +'<div style="font-size:9px;color:#C8A96E;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">Credit score?</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px" id="grp-credit">'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'credit\',\'700+\',\'grp-credit\')">700+</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'credit\',\'650\u2013699\',\'grp-credit\')">650\u2013699</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'credit\',\'Below 650\',\'grp-credit\')">Below 650</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'credit\',\'Not sure\',\'grp-credit\')">Not sure</button>'
-    +'</div>'
-    +'<div style="font-size:9px;color:#C8A96E;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">Employment / income?</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:12px" id="grp-income">'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'income\',\'Employed W2\',\'grp-income\')">Employed W2</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'income\',\'Self-employed\',\'grp-income\')">Self-employed</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'income\',\'Guarantor/Co-signer\',\'grp-income\')">Guarantor</button>'
-    +'<button class="jpreq-btn" onclick="jpreq(this,\'income\',\'Other\',\'grp-income\')">Other</button>'
-    +'</div>'
-    +'<button id="jpreqbtn" onclick="jfinishPreQual()" disabled style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;opacity:0.35;margin-top:4px;transition:opacity 0.3s">Show Me Available Times \u2192</button>'
-    +'</div>';
-}
-
-function jpreq(el,key,val,grpId){
-  var grp=document.getElementById(grpId);
-  var btns=grp.querySelectorAll('.jpreq-btn');
-  for(var i=0;i<btns.length;i++){
-    btns[i].style.background='transparent';
-    btns[i].style.borderColor='rgba(200,169,110,0.25)';
-    btns[i].style.color='rgba(200,169,110,0.85)';
-    btns[i].style.fontWeight='400';
-  }
-  el.style.background='rgba(200,169,110,0.18)';
-  el.style.borderColor='#C8A96E';
-  el.style.color='#C8A96E';
-  el.style.fontWeight='600';
-  jpreqAnswers[key]=val;
-  if(Object.keys(jpreqAnswers).length>=4){
-    var btn=document.getElementById('jpreqbtn');
-    if(btn){btn.disabled=false;btn.style.opacity='1';}
-  }
-}
-
-function jfinishPreQual(){
-  var q=jpreqAnswers;
-  document.getElementById('jform').style.display='none';
-  if(q.credit==='Below 650'){
-    jbot('Thanks for being upfront, '+jL.name+'! A credit score below 650 may require a guarantor or additional deposit. Ana can walk you through the options in person \u2014 let\u2019s still get you a tour. Pick a time:');
-  }else{
-    jbot('Great \u2014 you\u2019re all set! '+(jL.unit?jL.unit+' looks like a great fit':'We have units that fit your budget')+'. Let me show you available tour times:');
-  }
-  jL.preq=q;
-  jL.unit=jL.unit||q.budget||'';
-  setTimeout(jshowslots,400);
-}
-
-function jshowslots(){
-  var slots=[];
-  var now=new Date();
-  var dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  var monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var tourTimes={2:['12:00 PM','2:00 PM','4:00 PM','6:00 PM'],3:['12:00 PM','2:00 PM','4:00 PM','6:00 PM'],4:['12:00 PM','2:00 PM','4:00 PM','6:00 PM'],5:['12:00 PM','2:00 PM','4:00 PM'],6:['12:00 PM','1:00 PM','2:00 PM','3:00 PM'],0:['12:00 PM','1:00 PM','2:00 PM','3:00 PM']};
-  var d=new Date(now);d.setDate(d.getDate()+1);
-  var count=0;
-  while(slots.length<8&&count<30){
-    var dow=d.getDay();
-    if(tourTimes[dow]){
-      var times=tourTimes[dow];
-      var time=times[Math.floor(slots.length/3)%times.length]||times[0];
-      var label=dayNames[dow]+' '+monthNames[d.getMonth()]+' '+d.getDate()+' \u00B7 '+time;
-      slots.push(label);
-    }
-    d.setDate(d.getDate()+1);count++;
-  }
-  var unique=[];
-  for(var i=0;i<slots.length;i++){if(unique.indexOf(slots[i])===-1)unique.push(slots[i]);}
-  unique=unique.slice(0,8);
-
-  var s=document.getElementById('jslots');s.style.display='block';
-  var html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">';
-  for(var i=0;i<unique.length;i++){
-    html+='<div class="jslot" onclick="jselslot(this,\''+unique[i].replace(/'/g,"\\'")+'\')">'+unique[i]+'</div>';
-  }
-  html+='</div><div style="padding:4px 0 0"><button id="jconfbtn" onclick="jconfirm()" disabled style="background:#C8A96E;color:#000;border:none;border-radius:6px;padding:9px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;width:100%;cursor:pointer;font-family:Montserrat,sans-serif;opacity:0.4">Confirm My Tour \u2192</button></div>';
-  s.innerHTML=html;
-}
-
-function jselslot(el,slot){
-  jselected=slot;
-  var all=document.getElementById('jslots').querySelectorAll('.jslot');
-  for(var i=0;i<all.length;i++){
-    all[i].style.background='rgba(200,169,110,0.06)';
-    all[i].style.borderColor='rgba(200,169,110,0.15)';
-    all[i].style.color='rgba(245,240,232,0.7)';
-  }
-  el.style.background='rgba(200,169,110,0.18)';
-  el.style.borderColor='#C8A96E';
-  el.style.color='#C8A96E';
-  var btn=document.getElementById('jconfbtn');
-  if(btn){btn.disabled=false;btn.style.opacity='1';}
-}
-
-function jconfirm(){
-  if(!jselected)return;
-  var slot=jselected;
-  var preqSummary='Move: '+(jpreqAnswers.move||'?')+' | Budget: '+(jpreqAnswers.budget||'?')+' | Credit: '+(jpreqAnswers.credit||'?')+' | Income: '+(jpreqAnswers.income||'?');
-
-  fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:jL.name,email:jL.email,phone:jL.phone,source:'jessica-booked',page:window.location.pathname,message:(jL.unit||'')+' | '+preqSummary,status:'tour_scheduled',tourSlot:slot})}).catch(function(){});
-
-  document.getElementById('jslots').style.display='none';
-  document.getElementById('jinbar').style.display='none';
-  jusr('Confirmed: '+slot);
-  jbot('You\u2019re booked, '+jL.name+'! \uD83C\uDF89');
-
-  var m=document.getElementById('jmsgs');
-  var d=document.createElement('div');
-  d.style.cssText='background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.2);border-radius:8px;padding:12px;font-size:11px;line-height:1.8;color:rgba(245,240,232,0.75);margin-top:8px';
-  d.innerHTML='\uD83D\uDCCD 65 McWhorter St, Newark NJ 07105<br>\uD83D\uDCC5 '+slot+'<br>\uD83D\uDCE7 Confirmation sent to '+jL.email+'<br>\uD83D\uDCDE Questions? Call (908) 699-6500<br><div style="margin-top:10px;font-size:11px;color:rgba(200,169,110,0.7);font-family:Montserrat,sans-serif">Ana Haynes will personally greet you. See you soon!</div>';
-  m.appendChild(d);m.scrollTop=m.scrollHeight;
-}
+// Booking handled by external form at silver-ganache-1ee2ca.netlify.app/booking-form
 
 async function japi(msg){
   jH.push({role:'user',content:msg});
