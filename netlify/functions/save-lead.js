@@ -28,7 +28,7 @@ exports.handler = async (event) => {
     return {
       statusCode: res.ok ? 200 : 400,
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-      body: res.ok ? '{"ok":true}' : '{"error":"Failed to save lead"}'
+      body: res.ok ? '{"ok":true}' : JSON.stringify({ error: 'Supabase ' + res.status, detail: await res.text() })
     };
   } catch (err) {
     return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
