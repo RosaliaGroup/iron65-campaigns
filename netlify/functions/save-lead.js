@@ -8,14 +8,17 @@ exports.handler = async (event) => {
     const body = JSON.parse(event.body);
     const { name, email, phone, source, page, message, status } = body;
 
+    const SUPA_URL = process.env.SUPABASE_URL || 'https://fhkgpepkwibxbxsepetd.supabase.co';
+    const SUPA_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_-AYsxYIUbR4xwygPEABQhQ_7YgR80gS';
+
     const res = await fetch(
-      process.env.SUPABASE_URL + '/rest/v1/leads',
+      SUPA_URL + '/rest/v1/leads',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'apikey': process.env.SUPABASE_ANON_KEY,
-          'Authorization': 'Bearer ' + process.env.SUPABASE_ANON_KEY,
+          'apikey': SUPA_KEY,
+          'Authorization': 'Bearer ' + SUPA_KEY,
           'Prefer': 'return=minimal'
         },
         body: JSON.stringify({ name, email, phone, source, page, message, status: status || 'new', role: 'user' })
