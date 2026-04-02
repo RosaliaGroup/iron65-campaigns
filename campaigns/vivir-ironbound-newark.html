@@ -29,6 +29,9 @@
       @media(max-width:768px){
       div[style*="grid-template-columns:repeat(3"]{grid-template-columns:repeat(2,1fr) !important;}
     }
+  
+  #jbtn{position:fixed!important;bottom:24px!important;right:24px!important;z-index:99999!important;width:52px!important;height:52px!important;border-radius:50%!important;background:#C8A96E!important;border:none!important;cursor:pointer!important;display:flex!important;align-items:center!important;justify-content:center!important;box-shadow:0 4px 20px rgba(200,169,110,0.4)!important;font-size:22px!important}
+  #jwin{position:fixed!important;bottom:84px!important;right:24px!important;z-index:99998!important}
   </style>
 </head>
 <body>
@@ -219,7 +222,7 @@
       var source=window.location.pathname.replace('/campaigns/','').replace('/blogs/','').replace('.html','');
       if(!name||!email){alert('Please enter your name and email.');return;}
       try{
-        await fetch('https://ekxlteabqduyrnhpwzll.supabase.co/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreGx0ZWFicWR1eXJuaHB3emxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgxMTQ4MzMsImV4cCI6MjAyMzY5MDgzM30.QjmMEMlMzRNBxNaFsAbXoPYuFMFvTLkB3YqmL8qbqm4','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreGx0ZWFicWR1eXJuaHB3emxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgxMTQ4MzMsImV4cCI6MjAyMzY5MDgzM30.QjmMEMlMzRNBxNaFsAbXoPYuFMFvTLkB3YqmL8qbqm4','Prefer':'return=minimal'},body:JSON.stringify({name:name,email:email,phone:phone,source:source,page:source,status:'new',role:'user'})});
+        await fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,email:email,phone:phone,source:source,page:source,status:'new'})}));
         document.getElementById('lead-form-section').innerHTML='<div style="text-align:center;padding:60px 20px"><div style="font-family:Cormorant Garamond,serif;font-size:42px;color:#C8A96E;margin-bottom:16px">Thank You, '+name+'</div><p style="color:rgba(245,240,232,0.6);font-size:14px;margin-bottom:32px">Ana will reach out within the hour.<br>In the meantime, explore available units.</p><a href="https://iron65.com/floor-plans/" target="_blank" style="background:#C8A96E;color:#000;padding:14px 32px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block">View Floor Plans</a></div>';
       }catch(e){alert('Please call Ana directly: (908) 699-6500');}
     }
